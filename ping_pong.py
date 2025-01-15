@@ -22,12 +22,22 @@ class GameSprite(sprite.Sprite):
 # класс главного игрока
 class Player(GameSprite):
    # метод для управления спрайтом стрелками клавиатуры
-    def update(self):
+    def update_l(self):
         keys = key.get_pressed()
-        if keys[K_LEFT] and self.rect.x > 5:
-            self.rect.x -= self.speed
-        if keys[K_RIGHT] and self.rect.x < win_width - 80:
-            self.rect.x += self.speed
+        if keys[K_w] and self.rect.x > 5:
+            self.rect.y -= self.speed
+        if keys[K_s] and self.rect.x < win_width - 80:
+            self.rect.y += self.speed
+    
+    def update_r(self):
+        keys = key.get_pressed()
+        if keys[K_UP] and self.rect.x > 5:
+            self.rect.y -= self.speed
+        if keys[K_DOWN] and self.rect.x < win_width - 80:
+            self.rect.y += self.speed
+
+racket_image = 'racket.png'
+ball_image = 'tenis_ball.png'
 
 # игровая сцена
 win_width = 600
@@ -38,3 +48,26 @@ window.fill(back)
 
 game = True
 finish = False
+clock = time.Clock()
+FPS = 60
+
+racket1 = Player(racket_image, 30, 150, 40, 200, 150)
+racket2 = Player(racket_image, 520, 150, 40, 200, 150)
+
+ball = GameSprite(ball_image, 200, 200, 50, 50, 50)
+
+while game:
+    for e in event.get():
+        if e.type == QUIT:
+            game = False
+    
+    if not finish:
+        racket1.update_l()
+        racket2.update_r()
+
+        racket1.reset()
+        racket2.reset()
+        ball.reset()
+    
+    display.update()
+    clock.tick(FPS)
